@@ -1,0 +1,29 @@
+{
+  "name": "imanage",
+  "version": "1.0.0",
+  "description": "##  IMANAGE IMANAGE is a  simple app that allows employees to clock in and clock out remotely where employees would use the web browser on any device to clock in and clock.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jullie8/IMANAGE.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jullie8/IMANAGE/issues"
+  },
+  "homepage": "https://github.com/Jullie8/IMANAGE#readme",
+  "dependencies": {
+    "body": "^5.1.0",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "morgan": "^1.9.0",
+    "nodemon": "^1.17.4",
+    "parser": "^0.1.4",
+    "pg-promise": "^8.4.4"
+  }
+}
