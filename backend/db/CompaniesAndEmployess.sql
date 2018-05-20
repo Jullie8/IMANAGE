@@ -5,7 +5,8 @@ CREATE DATABASE imanage;
 
 CREATE TABLE company (
     id SERIAL PRIMARY KEY,
-    company_name VARCHAR(255)
+    company_name VARCHAR(255),
+    company_inviteurl VARCHAR(255)
 );
 
 CREATE TABLE worksites (

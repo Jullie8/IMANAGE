@@ -1,21 +1,35 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import {Link, Route, Switch} from "react-router-dom";
+import Home from "./signup/Home";
+import NewCompany from "./signup/NewCompany";
 
-class App extends Component {
-  render() {
+class App extends React.Component {
+  constructor (){
+    super ();
+    this.state = {
+
+    }
+  }
+  render () {
+
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
+    <div>
+      <nav>
+      <Link to="/">Home</Link>
+      {" "}
+      <Link to="/companysignup">Sign Up</Link>
+      </nav>
+      
+      <Switch>
+      <Route exact path="/" component={Home}/>
+      <Route path="/companysignup" component={NewCompany}/>
+      </Switch>
+  </div>
+
+   
+    )
   }
 }
+
 
 export default App;
