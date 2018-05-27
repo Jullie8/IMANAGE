@@ -28,7 +28,7 @@ var users = require('./routes/users');
 // This line of code instantiates the Express JS framework. 
 // Assigns it to a variable called app and will add our configuration to this variable.
 const app= express(); 
-const port = 4000; 
+const port = 3100; 
 
 // The .use method is similar to the .set method, where it allows us to set further configurations. 
 //The .use method also acts as a chain of events that will take place once a request hits our Node.js application. 

@@ -26,7 +26,7 @@ CREATE TABLE contracts (
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     employed_by INTEGER REFERENCES company(id) ON DELETE CASCADE,
-    user_name VARCHAR (200),
+    full_name VARCHAR (200),
     email VARCHAR (60) UNIQUE,
     password_digest VARCHAR (255),
     is_admin BOOLEAN

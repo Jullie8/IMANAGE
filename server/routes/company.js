@@ -12,21 +12,18 @@ const router = express.Router();
 //     .catch (err => console.log (err));
 //   });
   
+
 // POST "/company/user:id": 
 //Gets all employees for a particular company (contained in the request body).
-
-
+/* GET users listing. */
+// router.get('/', loginRequired, db.getAllUsers);
+// router.get('/:user_id', loginRequired, db.getSingleUser);
 
 
 //We are going to do the same thing for the remaining routes.
-router.get('/login', (req, res) => {
-    res.send('You are on the company login page');
-});
-
-router.get('/logout', (req, res) => {
-    res.send('You are on the company logout page');
-});
-
+// router.post('/new', db.createUser);
+// router.post('/login', passport.authenticate("local", {}), db.loginUser);
+// router.post('/logout', loginRequired, db.logoutUser);
 
 
 module.exports = router;
