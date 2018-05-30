@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormErrors } from './FormErrors';
+import axios from 'axios';
 
 class CompanySignUpForm extends React.Component {
     constructor(props) {
@@ -9,6 +10,7 @@ class CompanySignUpForm extends React.Component {
         companyName: "",
         companyEmail: "",
         password: "",
+        message: "",
         // reEnteredPw: "",
 
         formErrors:{fullName: '', companyName:'', companyEmail: '', password: ''},
@@ -95,9 +97,6 @@ class CompanySignUpForm extends React.Component {
       }
     }
 
-        
-  
-
     formValidation(){
       this.setState({
         isFormValid: this.state.passwordIsValid && this.state.companyNameIsValid && this.state.fullNameIsValid});
@@ -109,14 +108,37 @@ class CompanySignUpForm extends React.Component {
   }
 
 
+    submitForm = (event) =>{
+      // const {companyName} = this.state;
+      event.preventDefault();
+      axios.post("/company/new", {
+          companyName: this.state.companyName
+        })
+        .then((res)=>{
+          console.log(res.data)
+          this.setState({
+            companyName: "",
+            message: "Register Success"
+          })
+        })
+        .catch((err)=>{
+            this.setState({
+              companyName: "",
+              message: "Something went wrong"
+            })
+            console.log(err)
+        })
+
+    }
+
     render() {
+      const {companyName, message} = this.state;
       // const { fields, passwordInput } = this.state;
-     console.log(this.state.formErrors);
+      console.log(this.state.formErrors);
       console.log(this.state.fullName)
       console.log(this.state.companyName)
       console.log(this.state.companyEmail)
       console.log(this.state.password)
-      console.log(this.state.reEnteredPw)
       console.log(this.state.passwordIsValid)    
       console.log(this.state.isFormValid)
       //all inputs have a value and handle change:
@@ -124,9 +146,6 @@ class CompanySignUpForm extends React.Component {
       <div>
 
         <h2> Company Sign Up </h2> 
-       
-        <form >
-
         <div >
         <FormErrors formErrors={this.state.formErrors} />
         </div>
@@ -193,12 +212,9 @@ class CompanySignUpForm extends React.Component {
         value= {this.state.reEnteredPw}
         />
         <br/> */}
-
-    
         <br/> 
-        <button type="submit" disabled={!this.state.isFormValid}> Sign Up </button> 
-  </form> 
-    
+        <button onClick={this.submitForm} type="submit" disabled={!this.state.isFormValid}> Sign Up </button> 
+        {message}
       </div>
       );
 

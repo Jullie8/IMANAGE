@@ -2,7 +2,13 @@
 //Import libraries to be used 
 const express = require('express');
 const router = express.Router();
+const db = require('../db/queries');
 
+// const passport = require('../auth/local');
+// const { loginRequired } = require("../auth/helpers");
+
+
+router.post('/new', db.createUserCompany);
 /* GET all companies */
 // router.get('/all', function(req, res, next) {
 //     db.any("SELECT * FROM company")
