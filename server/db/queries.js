@@ -14,18 +14,27 @@ function createUserCompany(req, res, next) {
            message: "Registration successful."
          })
     })
+   
+    console.log(req.body.companyName)
+    console.log(req.body.fullName)
+    console.log("Hey I am the password:" + req.body.password)
+    console.log("Hey I am the email:" + req.body.email)
 
-    // db.none('INSERT INTO company (company_name) VALUES (${companyName})',{companyName:req.body.companyName})
-    // .then(()=>{
+    // db.any('INSERT INTO users (employed_by, full_name, password_digest, email, user_type) VALUES ((SELECT id FROM company WHERE company_name = ${companyName}), ${fullName}, ${password}, ${email}, ${user_type})', {companyName:req.body.companyName, fullName:req.body.fullName, password:req.body.password, email:req.body.email, user_type:"admin"})
+    db.any('INSERT INTO users (employed_by, full_name, password_digest, user_type, email) VALUES ((SELECT id FROM company WHERE company_name = ${companyName}), ${fullName}, ${password}, ${user_type}, ${email})', {companyName:req.body.companyName, fullName:req.body.fullName, password:req.body.password, user_type:"admin", email:req.body.email})
+    .then((data)=>{
+      // console.log(data.data)
+        res.status(200)
+        .json({
+          message: "Registration successful."
 
-    // }
-
-
-    // )
+        })
+    })
     .catch((err) => {
       console.log(err);
       res.status(500)
          .json({
+           //window alert to make the error pop up 
            message: err
          })
     })

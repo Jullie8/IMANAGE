@@ -5,11 +5,9 @@ CREATE DATABASE imanage;
 
 CREATE TABLE company (
     id SERIAL PRIMARY KEY,
-    company_name VARCHAR(255)
+    company_name VARCHAR(255) NOT NULL UNIQUE
     -- company_inviteurl VARCHAR(255)
 );
-
-
 
 CREATE TABLE contracts (
     id SERIAL PRIMARY KEY,
@@ -32,7 +30,7 @@ CREATE TABLE users (
     full_name VARCHAR (200),
     password_digest VARCHAR (255),
     user_type VARCHAR (60),
-    email VARCHAR (60) NOT NULL,
+    email VARCHAR (60) NOT NULL UNIQUE,
     CONSTRAINT email_unique UNIQUE(email)
     --employees are going to be filtered based on the status 
     -- future implementation may hold another row for is_manager yesorno so that managers can also checkin employees

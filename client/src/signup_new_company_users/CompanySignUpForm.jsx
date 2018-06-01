@@ -112,12 +112,18 @@ class CompanySignUpForm extends React.Component {
       // const {companyName} = this.state;
       event.preventDefault();
       axios.post("/company/new", {
-          companyName: this.state.companyName
+          companyName: this.state.companyName,
+          fullName: this.state.fullName,
+          email: this.state.companyEmail,
+          password: this.state.password
         })
         .then((res)=>{
           console.log(res.data)
           this.setState({
             companyName: "",
+            fullName: "",
+            companyEmail: "",
+            password: "",
             message: "Register Success"
           })
         })
@@ -128,7 +134,6 @@ class CompanySignUpForm extends React.Component {
             })
             console.log(err)
         })
-
     }
 
     render() {
@@ -141,18 +146,21 @@ class CompanySignUpForm extends React.Component {
       console.log(this.state.password)
       console.log(this.state.passwordIsValid)    
       console.log(this.state.isFormValid)
-      //all inputs have a value and handle change:
+      //all inputs have a value and handle change // 
+
+      const divFormStyle = {
+      margin: '30px',
+      border: '5px solid #FFFF'
+};
       return ( 
-      <div>
+      <div style={divFormStyle} class="card-body">
 
         <h2> Company Sign Up </h2> 
         <div >
         <FormErrors formErrors={this.state.formErrors} />
         </div>
 
-        <label>Full Name: </label> {''} 
-        <br />
-
+        <label>Full Name: </label> {''} <br />
         <div className={`form-group ${this.errClass(this.state.formErrors.fullName)}`}>
         <input 
         type="text"
@@ -177,7 +185,7 @@ class CompanySignUpForm extends React.Component {
        </div>
         
         <label> Email address </label> {''} <br />
-        <div>
+        <div className="form-group">
         <input 
         type = "email"
         required
@@ -186,7 +194,7 @@ class CompanySignUpForm extends React.Component {
         onChange = {this.handleUserInput} 
         value = {this.state.companyEmail}
         />
-    </div>
+        </div>
 
 
         <label> Create Your Password: </label> {''} <br />
