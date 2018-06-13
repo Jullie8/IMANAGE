@@ -20,9 +20,7 @@ dotenv.load();//=> is the same as dotenv.cofig
 //We saw in the directory structure section that we will have an index.js file in a routes directory.
 var routes = require('./routes/index');
 var company= require('./routes/company');
-var users = require('./routes/users');
-// var company = require('./routes/company'); will need this later
-
+// var employees = require('./routes/employees');will need this later
 
 
 // This line of code instantiates the Express JS framework. 
@@ -40,21 +38,26 @@ app.use(cookieParser());
 
 app.use(session({
     secret: "\x02\xf3\xf7r\t\x9f\xee\xbbu\xb1\xe1\x90\xfe'\xab\xa6L6\xdd\x8d[\xccO\xfe",
-    resave: true,
+    resave: false,
     saveUninitialized: true
   }));
+  //The 'secret' part is that seed, and could be anything - here, we used a series of randomly generated characters. 
+  //It's not generally best-practice to shove it right in there - when we deploy to production, we'll want to hide it in a similar way that we'd hide our API keys.
 
   app.use(passport.initialize());
   app.use(passport.session());
-  app.use('/public',express.static(path.join(__dirname, 'public')));//Serves resources from public folder
+
+  app.use(express.static(path.join(__dirname, 'public')));//Serves resources from public folder
   
 
 // We add our routes just after the express.static statement to link the routes we defined to our app.
 app.use('/', routes);
 app.use('/company', company);
-app.use('/users', users);
+// app.use('/employees', employees);will need this later
 
 
+//---ERROR HANDLING
+//Error-handling functions have four arguments instead of three: (err, req, res, next).
 
 // catch 404 and forward to error handler handlers aka callback func
 app.use(function(req, res, next) {
@@ -63,11 +66,12 @@ app.use(function(req, res, next) {
     next(err);
   });
 
-  // error handler - // If our application encounters an error, we'll display the error and stack trace accordingly.
+// error handler - // If our application encounters an error, we'll display the error and stack trace accordingly.
 app.use((err,req,res,next)=>{
+    console.log(err);
     res.status(err.status|| 500);
-    res.render('error', {
-        message:err.message,
+//shouldnot use res.render is for view engine use                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+    res.json({
         error:err
     });
 });
@@ -77,7 +81,7 @@ app.listen(port, ()=>{
     console.log(`App listening on port ${port}`)
 });
 
-// module.exports = app;
+module.exports = app;
 
 //notes:
 

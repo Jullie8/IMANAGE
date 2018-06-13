@@ -5,7 +5,7 @@ CREATE DATABASE imanage;
 
 CREATE TABLE company (
     id SERIAL PRIMARY KEY,
-    company_name VARCHAR(255) NOT NULL UNIQUE
+    company_name VARCHAR(100)
     -- company_inviteurl VARCHAR(255)
 );
 
@@ -17,21 +17,21 @@ CREATE TABLE contracts (
 
 CREATE TABLE worksites (
     id SERIAL PRIMARY KEY,
-    street_address VARCHAR (255),
-    borough VARCHAR (255),
-    zipcode VARCHAR (5),
+    street_address VARCHAR(255),
+    borough VARCHAR(255),
+    zipcode VARCHAR(5),
     contract_id INTEGER REFERENCES contracts(id)ON DELETE CASCADE  
 );
 
-
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    employed_by INTEGER REFERENCES company(id) ON DELETE CASCADE,
-    full_name VARCHAR (200),
+    employed_by INTEGER REFERENCES company(id),
+    full_name VARCHAR(200),
     password_digest VARCHAR (255),
     user_type VARCHAR (60),
-    email VARCHAR (60) NOT NULL UNIQUE,
-    CONSTRAINT email_unique UNIQUE(email)
+    activated_user BOOLEAN,
+    username VARCHAR NOT NULL UNIQUE,
+    CONSTRAINT username_unique UNIQUE(username)
     --employees are going to be filtered based on the status 
     -- future implementation may hold another row for is_manager yesorno so that managers can also checkin employees
     -- On Delete Cascade: when data is removed from a parent table, automatically data deleted from child table (foreign key table).

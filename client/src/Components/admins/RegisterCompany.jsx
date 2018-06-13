@@ -1,8 +1,14 @@
 import React from 'react';
 import { FormErrors } from './FormErrors';
 import axios from 'axios';
+import { Redirect } from 'react-router-dom'
 
-class CompanySignUpForm extends React.Component {
+//React Component Composition
+//Component Composition 
+//Declarative UI
+//event -> state change -> re-render
+
+class RegisterCompany extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -17,7 +23,8 @@ class CompanySignUpForm extends React.Component {
         fullNameIsValid:false,
         companyNameIsValid:false,
         passwordIsValid:false,
-        isFormValid: false
+        isFormValid: false,
+        // toDashBoard: false
        
       }
     }
@@ -109,30 +116,34 @@ class CompanySignUpForm extends React.Component {
 
 
     submitForm = (event) =>{
-      // const {companyName} = this.state;
       event.preventDefault();
       axios.post("/company/new", {
           companyName: this.state.companyName,
           fullName: this.state.fullName,
-          email: this.state.companyEmail,
+          username: this.state.companyEmail,
           password: this.state.password
         })
         .then((res)=>{
           console.log(res.data)
           this.setState({
-            companyName: "",
-            fullName: "",
-            companyEmail: "",
-            password: "",
-            message: "Register Success"
+            // companyName: "",
+            // fullName: "",
+            // companyEmail: "",
+            // password: "",
+            message: window.alert("Registration Successful")
           })
         })
+        // saveUser(user)
+        .then(()=>
+        // <Redirect to='/company/login'/>
+          this.props.history.push('/admins/login')
+        )
         .catch((err)=>{
+            console.log(err)
             this.setState({
               companyName: "",
               message: "Something went wrong"
-            })
-            console.log(err)
+            })   
         })
     }
 
@@ -146,12 +157,15 @@ class CompanySignUpForm extends React.Component {
       console.log(this.state.password)
       console.log(this.state.passwordIsValid)    
       console.log(this.state.isFormValid)
-      //all inputs have a value and handle change // 
-
+      //all inputs have a value and handle change //
       const divFormStyle = {
       margin: '30px',
       border: '5px solid #FFFF'
 };
+      // if (this.state.toDashBoard === true){
+      //   <Redirect to="/company/login" />
+      // }
+
       return ( 
       <div style={divFormStyle} class="card-body">
 
@@ -202,7 +216,7 @@ class CompanySignUpForm extends React.Component {
         <input 
         type= "password"
         required
-        placeholder= "Password"
+        placeholder= "Minimum 8 characters"
         name= "password"
         onChange= {this.handleUserInput}
         value= {this.state.password}
@@ -222,6 +236,8 @@ class CompanySignUpForm extends React.Component {
         <br/> */}
         <br/> 
         <button onClick={this.submitForm} type="submit" disabled={!this.state.isFormValid}> Sign Up </button> 
+  
+        {/* <button onClick={()=> this.props.history.push ('/company/login')} */}
         {message}
       </div>
       );
@@ -230,4 +246,4 @@ class CompanySignUpForm extends React.Component {
 
     }
 
-    export default CompanySignUpForm;
+    export default RegisterCompany;

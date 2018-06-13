@@ -1,10 +1,11 @@
 import React from 'react';
 import {Link, Route, Switch} from "react-router-dom";
 
-import Home from "./signup_new_company_users/Home";
-import CompanySignUpForm from "./signup_new_company_users/CompanySignUpForm";
+import Home from "./Components/Home";
+// import LoginAdmin from "./Components/LoginAdmin";
+import RegisterCompany from "./Components/admins/RegisterCompany";
+import Admins from './Components/admins/Admins';
  
-
 class App extends React.Component {
   constructor (){
     super ();
@@ -17,8 +18,11 @@ class App extends React.Component {
             {/* <Link to="/companysignup">Sign Up</Link>  */}
             <Switch>
                 <Route exact path="/" component={Home}/>
-                <Route path="/companysignup" component={CompanySignUpForm}/>
+                <Route path="/admins/registercompany" component={RegisterCompany}/>
+                {/* <Route path="/auth" component={Admins}/> */}
+                <Route path="/admins" component={Admins} />
             </Switch>
+           
          </div>)}
 }
 

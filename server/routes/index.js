@@ -4,11 +4,16 @@
 // const express = require('express');
 // const router = express.Router(); The format below is the same as here and above
 const router = require('express').Router();
+let db = require('../db/db_info.js');
 
-// const routes = require('express').Router();
-
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   res.status(200).json({ message: 'Connected!' });
 });
 
+
+
 module.exports = router;
+
+
+
+

@@ -14,13 +14,13 @@ return (
         <div className="card-body">
           <nav className=".navbar-toggler navbar bg-dark">
               <Link to="/">Home</Link> 
-              <Link to="/companysignup">Sign Up</Link>
-              <Link to="/login">Login</Link>
+              <Link to="/admins/registercompany">Sign Up</Link>
+              <Link to="/admins/login">Login</Link>
                 </nav>
                   <h1> Welcome To Imanage </h1>
                     <img src= "https://static1.squarespace.com/static/54f9248de4b0b89d005f8d31/t/56f079fbcf80a186e335e9d3/1458600488716/?format=300w" />
-                      <p class="text-justify">IMANAGE is a simple app to clock in and out that helps small business owners manage by allowing their employees to report their time when on the field. </p>
-                       <button onClick={()=> this.props.history.push ('/companysignup')} type="button" class="btn btn-primary">Sign Up</button>
+                      <p className="text-justify">IMANAGE is a simple app to clock in and out that helps small business owners manage by allowing their employees to report their time when on the field. </p>
+                       <button onClick={()=> this.props.history.push ('/admins/registercompany')} type="button" class="btn btn-primary">Sign Up</button>
           </div>
       </div>)}
 } 
