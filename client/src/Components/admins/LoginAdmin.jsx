@@ -1,5 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+import AdminsConsole from './console/AdminsConsole'
+
+
 
 class LoginAdmin extends React.Component {
   constructor() {
@@ -69,7 +72,7 @@ class LoginAdmin extends React.Component {
 
   render() {
     const { usernameInput, passwordInput, message } = this.state
-
+  
     if (!this.props.user) {
       return (
         <div>
@@ -93,21 +96,23 @@ class LoginAdmin extends React.Component {
     } else {
       return (
         <div>
-          <br></br>
-
+          <br></br>         
+          Welcome to your Admin console: {this.props.user.full_name}{''}
+          You are employed by: {this.props.user.employed_by}!
           <a style={{color: "red"}} onClick={this.logout}> Log Out </a>
 
+          <AdminsConsole user={this.props.user}/>
+
           <br></br>
-
-          Welcome to your Admin console, {this.props.user}!
-
           <br></br>
 
           {this.props.message}
+         
         </div>
       )
     }
   }
 }
 
-export default LoginAdmin
+export default LoginAdmin;
+

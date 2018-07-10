@@ -54,12 +54,12 @@ function getSingleCompanyOwnerAccountInfoById (req, res, next) {
     })
 }
 
-// //ON: company/new - route
-function createCompanyAccount(req, res, next) {
-  // req.body.companyName;
+//ON: company/new - route
+function createCompanyAccount(req, res, next){
+    // console.log(req.body);
   // req.body.password;
   const hash = authHelpers.createHash(req.body.password);
-  console.log(req.body)
+  // console.log(req.body)
   db.none('INSERT INTO company (company_name) VALUES (${companyName})',{companyName:req.body.companyName})
   .then(() => {
   db.any('INSERT INTO users (employed_by, full_name, password_digest, user_type, activated_user, username) VALUES ((SELECT id FROM company WHERE company_name = ${companyName}), ${fullName}, ${password}, ${user_type}, ${activated_user}, ${username})', {companyName:req.body.companyName, fullName:req.body.fullName, password:hash, user_type:"admin", activated_user: true, username:req.body.username})
@@ -79,12 +79,9 @@ function createCompanyAccount(req, res, next) {
     });
 }
 
-
-
-function loginUser(req, res) {
+function loginUser(req, res, next) {
   res.json(req.user);
 };
-
 
 //Passport exposes a logout() function on req (also aliased as logOut())
 //that can be called from any route handler which needs to terminate a login session.
@@ -95,12 +92,57 @@ function logoutUser(req, res, next) {
   //res.redirect('/');
   res.status(200).send("log out success");
 }
+
+// createEmployeeUser
+//ON: employees/getAllEmployees - Route
+function getAllEmployees(req, res, next) {
+  db
+    .any("SELECT * FROM users")
+    .then(function(data) {
+      res.status(200).json({
+        status: "success",
+        data: data,
+        message: "Retrieved All employee users"
+      });
+    })
+    .catch(function(err) {
+      console.log(err)
+      return next(err);
+    });
+}
+
+//company adds an employee
+function addEmployee(req, res, next) {
+  // req.body.companyName;
+  // req.body.password;
+  console.log(req.body)
+  //db.none('INSERT INTO users (employed_by, full_name, password_digest, user_type, activated_user, username) VALUES ((SELECT id FROM company WHERE company_name = ${companyName}), ${fullName}, ${password}, ${user_type}, ${activated_user}, ${username})', {companyName:req.body.companyName, fullName:req.body.fullName, password:hash, user_type:"admin", activated_user: true, username:req.body.username})
+  db.none('INSERT INTO users (employed_by, full_name, user_type, activated_user, username) VALUES (${employed_by}, ${fullName},${user_type}, ${activated_user}, ${username})', {employed_by:req.body.employed_by, companyName:req.body.companyName, fullName:req.body.fullName, user_type:"employee", activated_user: false, username:req.body.username})
+  .then((data) => {
+      res.status(200).json({
+           status: "success",
+           data: data,
+           message: "Company Registered successfully."
+         });
+    }) 
+     .catch(function(err) {
+       console.log(err);
+       res.status(500).json({
+       status:'error',
+       error:err
+       })
+    });
+}
+
+
   module.exports = {
     getAllCompanies:getAllCompanies,
     getAllCompanyOwners: getAllCompanyOwners,
     getSingleCompanyOwnerAccountInfoById: getSingleCompanyOwnerAccountInfoById,
     createCompanyAccount: createCompanyAccount,
     loginUser: loginUser,
-    logoutUser: logoutUser
+    logoutUser: logoutUser,
+    getAllEmployees: getAllEmployees,
+    addEmployee: addEmployee
   } 
 

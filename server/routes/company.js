@@ -19,7 +19,7 @@ router.get('/:id/getSingleBusinessOwner', db.getSingleCompanyOwnerAccountInfoByI
 router.post('/new', db.createCompanyAccount), 
 router.post('/login', passport.authenticate("local",{}), db.loginUser);
 router.post('/logout', loginRequired, db.logoutUser);
-
+router.post('/addCompanyEmployee', db.addEmployee);
 
 module.exports = router;
 

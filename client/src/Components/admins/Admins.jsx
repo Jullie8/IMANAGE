@@ -3,6 +3,26 @@ import { Route, Link, Switch } from 'react-router-dom';
 import LoginAdmin from './LoginAdmin';
 import RegisterCompany from './RegisterCompany';
 
+//How to use React Context
+//Setting Up Context Provider & define the data I want to store
+//2. use a context consumer where ever you need the data from the store
+//The newly created AppContext will be used to build a context provider component. This provider will store, in its state, the data we need and it will wrap all of the content of the component:
+const AppContext= React.createContext();
+
+class AppProvider extends React.Component {
+  state= {
+    user: ''
+    
+  }
+  render(){
+    return <AppContext.Provider value={this.state} >
+         {this.props.children}
+      </AppContext.Provider>
+   
+  }
+}
+
+
 class Admins extends React.Component {
   constructor() {
     super();
@@ -18,9 +38,10 @@ class Admins extends React.Component {
     })
   }
 
-  setUser = (data) => {
+  setUser= (data) => {
+    console.log(data);
     this.setState({
-      user: data.username
+      user: data
     })
   }
 
@@ -29,21 +50,39 @@ class Admins extends React.Component {
       user: ""
     })
   }
-
+//REACT CONTEXT BEGUN HERE
   renderLogin = () => {
     return (
-      <LoginAdmin toggleLogin={this.toggleLogin} setUser={this.setUser} removeUser={this.removeUser} message="" user={this.state.user} />
+    <AppProvider>  
+      <div className="loginAdmin">
+       <AppContext.Consumer>
+          {(context) => context.user}
+        </AppContext.Consumer>
+        <LoginAdmin toggleLogin={this.toggleLogin} setUser={this.setUser} removeUser={this.removeUser} message="" user={this.state.user} /> 
+     </div>
+   </AppProvider>
     )
   }
 
   renderRegister = () => {
     if (this.state.user) {
       return (
-        <LoginAdmin toggleLogin={this.toggleLogin} setUser={this.setUser} removeUser={this.removeUser} message="Please log out before you register" user={this.state.user}/>
+        <AppProvider>
+          <div>
+            <AppContext.Consumer>
+              {(context) => context.user}
+            </AppContext.Consumer>
+            <LoginAdmin toggleLogin={this.toggleLogin} setUser={this.setUser} removeUser={this.removeUser} message="Please log out before you register" user={this.state.user}/>
+        </div>
+        </AppProvider>
       )
     } else {
       return (
-        <RegisterCompany />
+        <div>
+        
+            <RegisterCompany />
+        </div>
+   
       )
     }
   }

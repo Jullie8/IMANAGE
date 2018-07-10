@@ -20,7 +20,7 @@ dotenv.load();//=> is the same as dotenv.cofig
 //We saw in the directory structure section that we will have an index.js file in a routes directory.
 var routes = require('./routes/index');
 var company= require('./routes/company');
-// var employees = require('./routes/employees');will need this later
+var employees = require('./routes/employees');
 
 
 // This line of code instantiates the Express JS framework. 
@@ -45,7 +45,9 @@ app.use(session({
   //It's not generally best-practice to shove it right in there - when we deploy to production, we'll want to hide it in a similar way that we'd hide our API keys.
 
   app.use(passport.initialize());
-  app.use(passport.session());
+  app.use(passport.session());// persistent login sessions
+//   app.use(flash()); // use connect-flash for flash messages stored in session
+
 
   app.use(express.static(path.join(__dirname, 'public')));//Serves resources from public folder
   
@@ -53,7 +55,7 @@ app.use(session({
 // We add our routes just after the express.static statement to link the routes we defined to our app.
 app.use('/', routes);
 app.use('/company', company);
-// app.use('/employees', employees);will need this later
+app.use('/employees', employees);
 
 
 //---ERROR HANDLING

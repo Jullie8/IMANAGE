@@ -18,7 +18,6 @@ class RegisterCompany extends React.Component {
         password: "",
         message: "",
         // reEnteredPw: "",
-
         formErrors:{fullName: '', companyName:'', companyEmail: '', password: ''},
         fullNameIsValid:false,
         companyNameIsValid:false,
@@ -162,10 +161,6 @@ class RegisterCompany extends React.Component {
       margin: '30px',
       border: '5px solid #FFFF'
 };
-      // if (this.state.toDashBoard === true){
-      //   <Redirect to="/company/login" />
-      // }
-
       return ( 
       <div style={divFormStyle} class="card-body">
 
