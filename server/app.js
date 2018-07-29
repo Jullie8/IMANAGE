@@ -7,8 +7,7 @@ var cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
 const dotenv = require('dotenv');
-
-
+var mailgun= require("mailgun-js");
 
 // We are using the dotenv library to load our environmental variables from the .env file. 
 // We don't have anything in the .env file for now will store app session secret, api keys etc.
@@ -56,6 +55,7 @@ app.use(session({
 app.use('/', routes);
 app.use('/company', company);
 app.use('/employees', employees);
+
 
 
 //---ERROR HANDLING

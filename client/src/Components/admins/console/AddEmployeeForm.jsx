@@ -2,12 +2,19 @@ import React from 'react';
 import axios from 'axios';
 const AppContext = React.createContext()
 
+
 class AddEmployeeForm extends React.Component {
     constructor(props){
         super(props);
+
+        this.roles = ["Office Admin", "Crew Manager", "Employee"];
+
         this.state= {
+            prefRole: "",
             fullName: "",
             username: "",
+            activated_user: false,
+            providedNotification: false
 
             // organizationalUnit:""
         }
@@ -22,6 +29,12 @@ class AddEmployeeForm extends React.Component {
     let name = e.target.name;
     let value = e.target.value;
     this.setState({[name]: value})}
+
+    handleRadioRoles = e =>{
+        this.setState({
+            [e.target.name]: e.target.value
+        });
+    };
     
 
     submitFormToAddEmployee= (event) =>{
@@ -30,7 +43,9 @@ class AddEmployeeForm extends React.Component {
             // companyName: this.state.companyName,
             fullName: this.state.fullName,
             username: this.state.username,
-            employed_by:this.props.user.employed_by
+            employed_by:this.props.user.employed_by,
+            user_type: this.state.prefRole,
+            activated_user: this.state.activated_user
             // employed_by: this.props.user.employed_by
             // password: this.state.password
           })
@@ -64,10 +79,12 @@ class AddEmployeeForm extends React.Component {
       }
 
 
-
 render (){
-    console.log(this.state.username)
+    console.log(this.state.username);
+    console.log(this.state.prefRole);
     const {companyID}= this.props
+
+   
     return (
         <div>
           <label>Full Name: </label> {''} <br />
@@ -95,6 +112,24 @@ render (){
         onChange= {this.handleAddEmployeeInput} 
         value= {this.state.username}
         />
+
+        <p>Available Roles</p>
+        {this.roles.map(role => (
+            <div>
+
+            {role}
+            <input
+                type= "radio"
+                name="prefRole"
+                value={role}
+                checked={this.state.prefRole === role}
+                onChange={this.handleRadioRoles}
+        />
+        </div>
+        ))}
+       
+
+
         <button onClick={this.submitFormToAddEmployee} type="submit" > Add </button> 
         </div>
 
@@ -104,3 +139,33 @@ render (){
 
 }
 export default AddEmployeeForm;
+
+
+// function sendNotification(message) {
+//     console.log(`Send email to employee here: ${message}`);
+// }
+
+// function loop () {
+//     if (activated_user === false) { 
+    
+//     if (!providedNotification){ 
+    
+//     sendNotification(`The ISS will pass over in ${minutesFromNow} minutes`); 
+    
+//     providedNotification = true; 
+    
+//     } else { 
+//     providedNotification = false;
+    
+//      } 
+
+//     // }).catch(error => {
+//     // console.log(error.response.body);
+//     // });
+    
+    
+    
+    
+    
+//     }
+

@@ -1,5 +1,7 @@
 let db = require('./db_info.js');
 
+const sendEmail = require('../emailUtil');
+
 const authHelpers = require("../auth/helpers");
 const passport = require("../auth/local");
 //Responses from within a middleware function can be in any format that you prefer, such as an HTML error page, a simple message, or a JSON string.
@@ -111,19 +113,30 @@ function getAllEmployees(req, res, next) {
     });
 }
 
-//company adds an employee
+//company adds an employee sends welcome email to the employee
+//TO DO:  Add activation link/ route
+//TO DO: Fix undefined output viewed on email for companyName
 function addEmployee(req, res, next) {
   // req.body.companyName;
   // req.body.password;
   console.log(req.body)
   //db.none('INSERT INTO users (employed_by, full_name, password_digest, user_type, activated_user, username) VALUES ((SELECT id FROM company WHERE company_name = ${companyName}), ${fullName}, ${password}, ${user_type}, ${activated_user}, ${username})', {companyName:req.body.companyName, fullName:req.body.fullName, password:hash, user_type:"admin", activated_user: true, username:req.body.username})
-  db.none('INSERT INTO users (employed_by, full_name, user_type, activated_user, username) VALUES (${employed_by}, ${fullName},${user_type}, ${activated_user}, ${username})', {employed_by:req.body.employed_by, companyName:req.body.companyName, fullName:req.body.fullName, user_type:"employee", activated_user: false, username:req.body.username})
-  .then((data) => {
+  db
+    .none('INSERT INTO users (employed_by, full_name, user_type, activated_user, username) VALUES (${employed_by}, ${fullName},${user_type}, ${activated_user}, ${username})', {employed_by:req.body.employed_by, companyName:req.body.companyName, fullName:req.body.fullName, user_type:req.body.user_type, activated_user: false, username:req.body.username})
+    .then((data) => {
+      // Send email
+      const message = {
+        subject: 'Hello '+req.body.fullName,
+        text: req.body.fullName +' welcome to the '+ req.body.companyName
+      };
+      sendEmail('jullissalema@c4q.nyc', req.body.username, message);
+
+      // Then respond to server
       res.status(200).json({
            status: "success",
            data: data,
-           message: "Company Registered successfully."
-         });
+           message: "Employee Registered and Email sent successfully."
+      });
     }) 
      .catch(function(err) {
        console.log(err);
