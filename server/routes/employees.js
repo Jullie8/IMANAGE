@@ -10,7 +10,7 @@ const sendEmail = require('../emailUtil');
 
 
 router.get('/getAllEmployeeUsers', db.getAllEmployees);
-
+router.get('/:id/activate', db.getSingleUser)
 
 // Finally, we export this module so that we can import it in our app.js file 
 //and gain access to the routes we defined.

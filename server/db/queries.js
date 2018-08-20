@@ -122,15 +122,19 @@ function addEmployee(req, res, next) {
   console.log(req.body)
   //db.none('INSERT INTO users (employed_by, full_name, password_digest, user_type, activated_user, username) VALUES ((SELECT id FROM company WHERE company_name = ${companyName}), ${fullName}, ${password}, ${user_type}, ${activated_user}, ${username})', {companyName:req.body.companyName, fullName:req.body.fullName, password:hash, user_type:"admin", activated_user: true, username:req.body.username})
   db
-    .none('INSERT INTO users (employed_by, full_name, user_type, activated_user, username) VALUES (${employed_by}, ${fullName},${user_type}, ${activated_user}, ${username})', {employed_by:req.body.employed_by, companyName:req.body.companyName, fullName:req.body.fullName, user_type:req.body.user_type, activated_user: false, username:req.body.username})
+    .one('INSERT INTO users (employed_by, full_name, user_type, activated_user, username) VALUES (${employed_by}, ${fullName},${user_type}, ${activated_user}, ${username}) RETURNING id', {employed_by:req.body.employed_by, companyName:req.body.companyName, fullName:req.body.fullName, user_type:req.body.user_type, activated_user: false, username:req.body.username})
+    .then(({id}) => db.one('SELECT users.id FROM users where id=$1',[id]))
     .then((data) => {
       // Send email
+      console.log('addEmployee', data);
       const message = {
         subject: 'Hello '+req.body.fullName,
-        text: req.body.fullName +' welcome to the '+ req.body.companyName
+        html: `${req.body.fullName}, welcome to <strong>${data.company_name}</strong>. Click 
+        <a href="http://localhost:3100/employees/${data.id}/activate">here</a> to complete registration.
+        `
       };
       sendEmail('jullissalema@c4q.nyc', req.body.username, message);
-
+      console.log('addEmployee.here')
       // Then respond to server
       res.status(200).json({
            status: "success",
@@ -139,13 +143,26 @@ function addEmployee(req, res, next) {
       });
     }) 
      .catch(function(err) {
-       console.log(err);
+       console.log('addEmployee', err);
        res.status(500).json({
        status:'error',
        error:err
        })
     });
 }
+
+// get single user account by id
+function getSingleUser(req,res,next){
+  db.one('SELECT users.id, company.company_name, users.full_name, users.activated_user AS activated_user, users.username FROM users Join company on company.id=users.employed_by where employed_by= $1',[req.params.id])
+ .then(data => {
+     res.json(data);
+ })
+ .catch(error => {
+  console.log(error)
+     res.json(error);
+ })
+ }
+//enable 
 
 
   module.exports = {
@@ -156,6 +173,7 @@ function addEmployee(req, res, next) {
     loginUser: loginUser,
     logoutUser: logoutUser,
     getAllEmployees: getAllEmployees,
-    addEmployee: addEmployee
+    addEmployee,
+    getSingleUser: getSingleUser
   } 
 

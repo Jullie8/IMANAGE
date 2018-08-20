@@ -8,7 +8,7 @@ module.exports = (from, recipient, message) => {
     from: from,
     to: recipient,
     subject: message.subject,
-    text: message.text,
+    html: message.html,
   };
   return new Promise((resolve, reject) => {
     mailgun.messages().send(data, (error) => {
