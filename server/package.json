@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -28,6 +30,8 @@
     "morgan": "^1.9.0",
     "nodemon": "^1.17.4",
     "passport": "^0.4.0",
-    "pg-promise": "^8.4.4"
-  }
+    "pg-promise": "^8.4.4",
+    "snyk": "^1.161.1"
+  },
+  "snyk": true
 }
